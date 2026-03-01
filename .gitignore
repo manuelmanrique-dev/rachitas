@@ -1,0 +1,10 @@
+# BMad framework (instalar con: npx bmad-method install)
+_bmad/
+
+# Configuración local de Claude Code
+.claude/
+
+# Misc
+.DS_Store
+*.log
+*:Zone.Identifier
