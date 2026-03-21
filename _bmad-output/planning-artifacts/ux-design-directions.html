@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primer — Design Directions Showcase</title>
+<style>
+  :root {
+    --nav-height: 56px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #1a1a2e;
+    color: #e0e0e0;
+    min-height: 100vh;
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    height: var(--nav-height);
+    gap: 12px;
+  }
+
+  .nav h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-right: 24px;
+    white-space: nowrap;
+  }
+
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+  }
+
+  .nav-tab {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: #999;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .nav-tab:hover { background: rgba(255,255,255,0.08); color: #ccc; }
+  .nav-tab.active { background: rgba(255,255,255,0.15); color: #fff; }
+
+  .nav-tab[data-theme="tierra"] { border-bottom: 3px solid #d4a054; }
+  .nav-tab[data-theme="salvia"] { border-bottom: 3px solid #7a9e7e; }
+  .nav-tab[data-theme="atardecer"] { border-bottom: 3px solid #7b6fa6; }
+
+  /* View toggle */
+  .view-toggle {
+    margin-left: auto;
+    display: flex;
+    gap: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 2px;
+  }
+
+  .view-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #999;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+
+  .view-btn.active { background: rgba(255,255,255,0.15); color: #fff; }
+
+  /* Main content */
+  .main {
+    padding-top: var(--nav-height);
+    min-height: 100vh;
+  }
+
+  .direction {
+    display: none;
+    padding: 24px;
+  }
+
+  .direction.active { display: block; }
+
+  .direction-header {
+    text-align: center;
+    padding: 32px 0;
+  }
+
+  .direction-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .direction-header p {
+    font-size: 16px;
+    opacity: 0.7;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Color palette display */
+  .palette-strip {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+
+  .color-chip {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.5);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  /* Phone mockup */
+  .mockups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 0;
+  }
+
+  .mockup-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .mockup-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #fff;
+  }
+
+  .mockup-card .subtitle {
+    font-size: 13px;
+    opacity: 0.5;
+    margin-bottom: 16px;
+  }
+
+  /* Phone frame */
+  .phone {
+    width: 100%;
+    max-width: 375px;
+    margin: 0 auto;
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    aspect-ratio: 9/19.5;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .phone-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .phone-header .sync-icon {
+    font-size: 12px;
+    opacity: 0.6;
+  }
+
+  .phone-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 16px 16px;
+  }
+
+  .phone-tabbar {
+    padding: 8px 16px 12px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    opacity: 0.5;
+  }
+
+  .tab-item.active { opacity: 1; }
+  .tab-icon { font-size: 20px; }
+
+  /* ==================== */
+  /* THEME: TIERRA CÁLIDA */
+  /* ==================== */
+
+  .theme-tierra {
+    --surface-primary: #faf6f0;
+    --surface-secondary: #f3ebe0;
+    --surface-chat-user: #e8d9c4;
+    --surface-chat-agent: #fff8ee;
+    --surface-elevated: #ffffff;
+    --text-primary: #3d2e1f;
+    --text-secondary: #7a6652;
+    --text-muted: #b3a08a;
+    --accent-primary: #c8873e;
+    --accent-celebration: #daa04d;
+    --accent-agent: #a06b2f;
+    --heatmap-empty: #ede5da;
+    --heatmap-low: #e6cfa8;
+    --heatmap-mid: #d4a054;
+    --heatmap-high: #b8862d;
+    --border-subtle: #e0d3c3;
+    --border-interactive: #c8b8a4;
+    --state-success: #8baa6e;
+    --state-warning: #d4a054;
+    --focus-ring: #c8873e;
+    --tabbar-bg: #f0e8dc;
+    --header-bg: #faf6f0;
+  }
+
+  /* ==================== */
+  /* THEME: SALVIA VIVA   */
+  /* ==================== */
+
+  .theme-salvia {
+    --surface-primary: #f5f8f5;
+    --surface-secondary: #eaf0ea;
+    --surface-chat-user: #d4e2d4;
+    --surface-chat-agent: #f0f7f0;
+    --surface-elevated: #ffffff;
+    --text-primary: #2a3a2a;
+    --text-secondary: #5a6e5a;
+    --text-muted: #94a894;
+    --accent-primary: #5d8a61;
+    --accent-celebration: #6a9e6e;
+    --accent-agent: #4a7a50;
+    --heatmap-empty: #e4ece4;
+    --heatmap-low: #bbd4bc;
+    --heatmap-mid: #7a9e7e;
+    --heatmap-high: #4a7a50;
+    --border-subtle: #d4e0d4;
+    --border-interactive: #b4c8b4;
+    --state-success: #6a9e6e;
+    --state-warning: #c4a84e;
+    --focus-ring: #5d8a61;
+    --tabbar-bg: #e8f0e8;
+    --header-bg: #f5f8f5;
+  }
+
+  /* ====================== */
+  /* THEME: ATARDECER SERENO */
+  /* ====================== */
+
+  .theme-atardecer {
+    --surface-primary: #f6f4fa;
+    --surface-secondary: #ece8f4;
+    --surface-chat-user: #d8d0e8;
+    --surface-chat-agent: #f4f0fb;
+    --surface-elevated: #ffffff;
+    --text-primary: #2e2842;
+    --text-secondary: #6b5f82;
+    --text-muted: #a498b8;
+    --accent-primary: #7b6fa6;
+    --accent-celebration: #e8927c;
+    --accent-agent: #6b5f96;
+    --heatmap-empty: #e8e2f0;
+    --heatmap-low: #c8bede;
+    --heatmap-mid: #7b6fa6;
+    --heatmap-high: #e8927c;
+    --border-subtle: #dad2ea;
+    --border-interactive: #beb4d4;
+    --state-success: #7ea87e;
+    --state-warning: #d4a864;
+    --focus-ring: #7b6fa6;
+    --tabbar-bg: #eae4f2;
+    --header-bg: #f6f4fa;
+  }
+
+  /* ==================== */
+  /* DARK VARIANTS        */
+  /* ==================== */
+
+  .theme-tierra-dark {
+    --surface-primary: #1c1712;
+    --surface-secondary: #2a2118;
+    --surface-chat-user: #3d2e1f;
+    --surface-chat-agent: #2a2118;
+    --surface-elevated: #352a1e;
+    --text-primary: #f0e4d4;
+    --text-secondary: #b8a48e;
+    --text-muted: #7a6652;
+    --accent-primary: #daa04d;
+    --accent-celebration: #e8b460;
+    --accent-agent: #c8873e;
+    --heatmap-empty: #2a2118;
+    --heatmap-low: #5a4428;
+    --heatmap-mid: #c8873e;
+    --heatmap-high: #daa04d;
+    --border-subtle: #3d2e1f;
+    --border-interactive: #5a4428;
+    --state-success: #8baa6e;
+    --state-warning: #d4a054;
+    --focus-ring: #daa04d;
+    --tabbar-bg: #2a2118;
+    --header-bg: #1c1712;
+  }
+
+  .theme-salvia-dark {
+    --surface-primary: #141c14;
+    --surface-secondary: #1e2a1e;
+    --surface-chat-user: #2a3a2a;
+    --surface-chat-agent: #1e2a1e;
+    --surface-elevated: #283828;
+    --text-primary: #dce8dc;
+    --text-secondary: #94a894;
+    --text-muted: #5a6e5a;
+    --accent-primary: #6a9e6e;
+    --accent-celebration: #7eb882;
+    --accent-agent: #5d8a61;
+    --heatmap-empty: #1e2a1e;
+    --heatmap-low: #2e4e32;
+    --heatmap-mid: #5d8a61;
+    --heatmap-high: #7eb882;
+    --border-subtle: #2a3a2a;
+    --border-interactive: #3a5a3e;
+    --state-success: #6a9e6e;
+    --state-warning: #c4a84e;
+    --focus-ring: #6a9e6e;
+    --tabbar-bg: #1e2a1e;
+    --header-bg: #141c14;
+  }
+
+  .theme-atardecer-dark {
+    --surface-primary: #181522;
+    --surface-secondary: #221e32;
+    --surface-chat-user: #2e2842;
+    --surface-chat-agent: #221e32;
+    --surface-elevated: #302a44;
+    --text-primary: #e0daea;
+    --text-secondary: #a498b8;
+    --text-muted: #6b5f82;
+    --accent-primary: #9488be;
+    --accent-celebration: #e8927c;
+    --accent-agent: #7b6fa6;
+    --heatmap-empty: #221e32;
+    --heatmap-low: #3e3660;
+    --heatmap-mid: #7b6fa6;
+    --heatmap-high: #e8927c;
+    --border-subtle: #2e2842;
+    --border-interactive: #443c62;
+    --state-success: #7ea87e;
+    --state-warning: #d4a864;
+    --focus-ring: #9488be;
+    --tabbar-bg: #221e32;
+    --header-bg: #181522;
+  }
+
+  /* Themed phone styles */
+  .phone[data-themed] {
+    background: var(--surface-primary);
+    color: var(--text-primary);
+  }
+
+  .phone[data-themed] .phone-header {
+    background: var(--header-bg);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .phone[data-themed] .phone-tabbar {
+    background: var(--tabbar-bg);
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .phone[data-themed] .tab-item.active {
+    color: var(--accent-primary);
+  }
+
+  /* Chat components */
+  .chat-bubble {
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 85%;
+    margin-bottom: 8px;
+  }
+
+  .chat-bubble.agent {
+    background: var(--surface-chat-agent);
+    color: var(--text-primary);
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+  }
+
+  .chat-bubble.user {
+    background: var(--surface-chat-user);
+    color: var(--text-primary);
+    border-bottom-right-radius: 4px;
+    align-self: flex-end;
+    margin-left: auto;
+  }
+
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .agent-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .agent-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-agent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    color: white;
+  }
+
+  .chat-timestamp {
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 0 42px;
+    margin-bottom: 8px;
+  }
+
+  /* Habit card in chat */
+  .habit-card-inline {
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 14px;
+    margin: 8px 0 8px 36px;
+    max-width: 85%;
+  }
+
+  .habit-card-inline h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--accent-primary);
+  }
+
+  .habit-card-inline .field {
+    display: flex;
+    gap: 8px;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: var(--text-secondary);
+  }
+
+  .habit-card-inline .field strong {
+    color: var(--text-primary);
+    min-width: 80px;
+  }
+
+  .habit-card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .btn-confirm {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    background: var(--accent-primary);
+    color: white;
+  }
+
+  .btn-adjust {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-interactive);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    background: transparent;
+    color: var(--text-secondary);
+  }
+
+  /* Heatmap */
+  .heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    gap: 3px;
+    margin: 12px 0;
+  }
+
+  .heatmap-cell {
+    aspect-ratio: 1;
+    border-radius: 3px;
+    min-width: 0;
+  }
+
+  .heatmap-cell.empty { background: var(--heatmap-empty); }
+  .heatmap-cell.low { background: var(--heatmap-low); }
+  .heatmap-cell.mid { background: var(--heatmap-mid); }
+  .heatmap-cell.high { background: var(--heatmap-high); }
+
+  /* Habit checklist */
+  .habit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .habit-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: var(--surface-secondary);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .habit-checkbox {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 2px solid var(--border-interactive);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  .habit-checkbox.checked {
+    background: var(--accent-celebration);
+    border-color: var(--accent-celebration);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .habit-name { color: var(--text-primary); flex: 1; }
+  .habit-streak { font-size: 12px; color: var(--text-muted); }
+
+  /* Section titles inside phone */
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 16px 0 8px;
+  }
+
+  .section-title:first-child { margin-top: 8px; }
+
+  /* Summit badge */
+  .summit-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--surface-secondary);
+    color: var(--accent-primary);
+    border: 1px solid var(--border-subtle);
+    margin-top: 8px;
+  }
+
+  /* Greeting */
+  .greeting {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .greeting-sub {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  /* Privacy indicator */
+  .privacy-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 4px 0;
+  }
+
+  /* Typing indicator */
+  .typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 10px 14px;
+    align-items: center;
+  }
+
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    animation: typing 1.4s ease-in-out infinite;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typing {
+    0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+    30% { opacity: 1; transform: translateY(-4px); }
+  }
+
+  /* Comparison view */
+  .comparison-view {
+    display: none;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .comparison-view.active {
+    display: grid;
+  }
+
+  .comparison-column h3 {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 16px;
+    color: #fff;
+  }
+
+  .comparison-column .phone {
+    max-width: 320px;
+  }
+
+  /* Token reference table */
+  .token-section {
+    display: none;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .token-section.active { display: block; }
+
+  .token-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+
+  .token-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .token-swatch {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .token-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .token-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #ccc;
+    font-family: monospace;
+  }
+
+  .token-value {
+    font-size: 11px;
+    color: #888;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .comparison-view.active {
+      grid-template-columns: 1fr;
+    }
+    .mockups-grid {
+      grid-template-columns: 1fr;
+    }
+    .nav {
+      padding: 0 12px;
+    }
+    .nav h1 {
+      font-size: 14px;
+      margin-right: 12px;
+    }
+    .nav-tab {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <h1>Primer — Direcciones</h1>
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-theme="tierra" onclick="showDirection('tierra')">Tierra Cálida</button>
+    <button class="nav-tab" data-theme="salvia" onclick="showDirection('salvia')">Salvia Viva</button>
+    <button class="nav-tab" data-theme="atardecer" onclick="showDirection('atardecer')">Atardecer Sereno</button>
+    <button class="nav-tab" onclick="showComparison()">Comparar</button>
+    <button class="nav-tab" onclick="showTokens()">Tokens</button>
+  </div>
+  <div class="view-toggle">
+    <button class="view-btn active" onclick="setMode('light')">Light</button>
+    <button class="view-btn" onclick="setMode('dark')">Dark</button>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ==================== TIERRA CÁLIDA ==================== -->
+  <section class="direction active" id="dir-tierra">
+    <div class="direction-header">
+      <h2 style="color: #daa04d;">Tierra Cálida</h2>
+      <p>Seguridad, arraigo, refugio. Como un lugar conocido donde puedes ser vulnerable.</p>
+      <div class="palette-strip">
+        <div class="color-chip" style="background: #faf6f0;">#faf6f0</div>
+        <div class="color-chip" style="background: #f3ebe0;">#f3ebe0</div>
+        <div class="color-chip" style="background: #e8d9c4;">#e8d9c4</div>
+        <div class="color-chip" style="background: #d4a054;">#d4a054</div>
+        <div class="color-chip" style="background: #c8873e; color: rgba(255,255,255,0.7);">#c8873e</div>
+        <div class="color-chip" style="background: #a06b2f; color: rgba(255,255,255,0.7);">#a06b2f</div>
+        <div class="color-chip" style="background: #8baa6e; color: rgba(255,255,255,0.7);">#8baa6e</div>
+        <div class="color-chip" style="background: #3d2e1f; color: rgba(255,255,255,0.7);">#3d2e1f</div>
+      </div>
+    </div>
+
+    <div class="mockups-grid">
+      <!-- Dashboard -->
+      <div class="mockup-card">
+        <h3>Dashboard — Registro Rápido</h3>
+        <p class="subtitle">Loop diario: un tap por hábito</p>
+        <div class="phone theme-tierra" data-themed id="tierra-dashboard">
+          <div class="phone-header">
+            <span>Primer</span>
+            <span class="sync-icon">☁️ ✓</span>
+          </div>
+          <div class="phone-content">
+            <div class="greeting">Buenos días, Marta</div>
+            <div class="greeting-sub">Tu progreso habla por ti</div>
+
+            <div class="section-title">Hoy</div>
+            <div class="habit-list">
+              <div class="habit-item">
+                <div class="habit-checkbox checked">✓</div>
+                <span class="habit-name">Meditar 5 minutos</span>
+                <span class="habit-streak">7 días</span>
+              </div>
+              <div class="habit-item">
+                <div class="habit-checkbox checked">✓</div>
+                <span class="habit-name">Leer 10 páginas</span>
+                <span class="habit-streak">12 días</span>
+              </div>
+              <div class="habit-item">
+                <div class="habit-checkbox"></div>
+                <span class="habit-name">Caminar 20 minutos</span>
+                <span class="habit-streak">3 días</span>
+              </div>
+            </div>
+
+            <div class="section-title">Tu progreso</div>
+            <div class="heatmap-grid" id="tierra-heatmap-1"></div>
+
+            <div class="summit-badge">⛰️ Cumbre: 7 días — Meditar</div>
+          </div>
+          <div class="phone-tabbar">
+            <div class="tab-item active"><span class="tab-icon">📋</span>Hábitos</div>
+            <div class="tab-item"><span class="tab-icon">💬</span>Pepito</div>
+            <div class="tab-item"><span class="tab-icon">👤</span>Perfil</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat / Onboarding -->
+      <div class="mockup-card">
+        <h3>Chat — Primera Conversación</h3>
+        <p class="subtitle">La conversación que configura todo</p>
+        <div class="phone theme-tierra" data-themed id="tierra-chat">
+          <div class="phone-header">
+            <span>Pepito Grillo</span>
+            <span class="privacy-badge">🔒 Solo tú</span>
+          </div>
+          <div class="phone-content">
+            <div class="chat-container">
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">Piensa en tu mejor versión. ¿Qué es lo que te imaginas?</div>
+              </div>
+              <div class="chat-timestamp">Hace 3 min</div>
+
+              <div class="chat-bubble user">Me gustaría ser alguien que lee todos los días. Siempre empiezo libros pero los dejo a la mitad.</div>
+
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">Eso dice mucho de ti — te interesa aprender, solo falta encontrar el momento adecuado. ¿Hay algún momento del día donde sueles tener un rato tranquilo?</div>
+              </div>
+
+              <div class="chat-bubble user">Sí, antes de dormir siempre estoy en la cama con el móvil</div>
+
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">Perfecto. Ese momento es ideal — ya tienes la señal natural. Te propongo algo:</div>
+              </div>
+
+              <div class="habit-card-inline">
+                <h4>📖 Tu primer hábito</h4>
+                <div class="field"><strong>Señal:</strong> Cuando te metas en la cama por la noche</div>
+                <div class="field"><strong>Rutina:</strong> Leer 10 páginas del libro que tengas</div>
+                <div class="field"><strong>Recompensa:</strong> Marcar tu progreso y ver crecer tu racha</div>
+                <div class="field"><strong>Frecuencia:</strong> Cada noche</div>
+                <div class="habit-card-actions">
+                  <button class="btn-confirm">✓ Crear hábito</button>
+                  <button class="btn-adjust">Ajustar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="phone-tabbar">
+            <div class="tab-item"><span class="tab-icon">📋</span>Hábitos</div>
+            <div class="tab-item active"><span class="tab-icon">💬</span>Pepito</div>
+            <div class="tab-item"><span class="tab-icon">👤</span>Perfil</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Return after absence -->
+      <div class="mockup-card">
+        <h3>Vuelta tras ausencia</h3>
+        <p class="subtitle">Sin castigo, sin drama — bienvenida cálida</p>
+        <div class="phone theme-tierra" data-themed>
+          <div class="phone-header">
+            <span>Pepito Grillo</span>
+            <span class="privacy-badge">🔒 Solo tú</span>
+          </div>
+          <div class="phone-content">
+            <div class="chat-container">
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">¡Hola, Marta! Me alegra verte. Tu progreso anterior sigue aquí — 12 días de lectura que nadie te quita. ¿Cómo estás?</div>
+              </div>
+              <div class="chat-timestamp">Ahora</div>
+
+              <div class="section-title" style="margin-left: 0;">Tu progreso acumulado</div>
+              <div class="heatmap-grid" id="tierra-heatmap-2"></div>
+
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">Los espacios vacíos son pausas, no fracasos. ¿Quieres retomar donde lo dejaste o hablar de algo nuevo?</div>
+              </div>
+
+              <div class="agent-row" style="margin-top: 8px;">
+                <div class="agent-avatar" style="visibility: hidden;">🦗</div>
+                <div class="typing-indicator" style="background: var(--surface-chat-agent); border-radius: 16px; border-bottom-left-radius: 4px;">
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="phone-tabbar">
+            <div class="tab-item"><span class="tab-icon">📋</span>Hábitos</div>
+            <div class="tab-item active"><span class="tab-icon">💬</span>Pepito</div>
+            <div class="tab-item"><span class="tab-icon">👤</span>Perfil</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SALVIA VIVA ==================== -->
+  <section class="direction" id="dir-salvia">
+    <div class="direction-header">
+      <h2 style="color: #6a9e6e;">Salvia Viva</h2>
+      <p>Crecimiento, naturaleza, calma. Como un jardín que cuidas cada día.</p>
+      <div class="palette-strip">
+        <div class="color-chip" style="background: #f5f8f5;">#f5f8f5</div>
+        <div class="color-chip" style="background: #eaf0ea;">#eaf0ea</div>
+        <div class="color-chip" style="background: #d4e2d4;">#d4e2d4</div>
+        <div class="color-chip" style="background: #7a9e7e;">#7a9e7e</div>
+        <div class="color-chip" style="background: #5d8a61; color: rgba(255,255,255,0.7);">#5d8a61</div>
+        <div class="color-chip" style="background: #4a7a50; color: rgba(255,255,255,0.7);">#4a7a50</div>
+        <div class="color-chip" style="background: #c4a84e;">#c4a84e</div>
+        <div class="color-chip" style="background: #2a3a2a; color: rgba(255,255,255,0.7);">#2a3a2a</div>
+      </div>
+    </div>
+
+    <div class="mockups-grid">
+      <!-- Dashboard -->
+      <div class="mockup-card">
+        <h3>Dashboard — Registro Rápido</h3>
+        <p class="subtitle">Loop diario: un tap por hábito</p>
+        <div class="phone theme-salvia" data-themed id="salvia-dashboard">
+          <div class="phone-header">
+            <span>Primer</span>
+            <span class="sync-icon">☁️ ✓</span>
+          </div>
+          <div class="phone-content">
+            <div class="greeting">Buenos días, Marta</div>
+            <div class="greeting-sub">Tu progreso habla por ti</div>
+
+            <div class="section-title">Hoy</div>
+            <div class="habit-list">
+              <div class="habit-item">
+                <div class="habit-checkbox checked">✓</div>
+                <span class="habit-name">Meditar 5 minutos</span>
+                <span class="habit-streak">7 días</span>
+              </div>
+              <div class="habit-item">
+                <div class="habit-checkbox checked">✓</div>
+                <span class="habit-name">Leer 10 páginas</span>
+                <span class="habit-streak">12 días</span>
+              </div>
+              <div class="habit-item">
+                <div class="habit-checkbox"></div>
+                <span class="habit-name">Caminar 20 minutos</span>
+                <span class="habit-streak">3 días</span>
+              </div>
+            </div>
+
+            <div class="section-title">Tu progreso</div>
+            <div class="heatmap-grid" id="salvia-heatmap-1"></div>
+
+            <div class="summit-badge">🌱 Cumbre: 7 días — Meditar</div>
+          </div>
+          <div class="phone-tabbar">
+            <div class="tab-item active"><span class="tab-icon">📋</span>Hábitos</div>
+            <div class="tab-item"><span class="tab-icon">💬</span>Pepito</div>
+            <div class="tab-item"><span class="tab-icon">👤</span>Perfil</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat -->
+      <div class="mockup-card">
+        <h3>Chat — Primera Conversación</h3>
+        <p class="subtitle">La conversación que configura todo</p>
+        <div class="phone theme-salvia" data-themed>
+          <div class="phone-header">
+            <span>Pepito Grillo</span>
+            <span class="privacy-badge">🔒 Solo tú</span>
+          </div>
+          <div class="phone-content">
+            <div class="chat-container">
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">Piensa en tu mejor versión. ¿Qué es lo que te imaginas?</div>
+              </div>
+              <div class="chat-timestamp">Hace 3 min</div>
+
+              <div class="chat-bubble user">Me gustaría ser alguien que lee todos los días. Siempre empiezo libros pero los dejo a la mitad.</div>
+
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">Eso dice mucho de ti — te interesa aprender, solo falta encontrar el momento adecuado. ¿Hay algún momento del día donde sueles tener un rato tranquilo?</div>
+              </div>
+
+              <div class="chat-bubble user">Sí, antes de dormir siempre estoy en la cama con el móvil</div>
+
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">Perfecto. Ese momento es ideal — ya tienes la señal natural. Te propongo algo:</div>
+              </div>
+
+              <div class="habit-card-inline">
+                <h4>📖 Tu primer hábito</h4>
+                <div class="field"><strong>Señal:</strong> Cuando te metas en la cama por la noche</div>
+                <div class="field"><strong>Rutina:</strong> Leer 10 páginas del libro que tengas</div>
+                <div class="field"><strong>Recompensa:</strong> Marcar tu progreso y ver crecer tu racha</div>
+                <div class="field"><strong>Frecuencia:</strong> Cada noche</div>
+                <div class="habit-card-actions">
+                  <button class="btn-confirm">✓ Crear hábito</button>
+                  <button class="btn-adjust">Ajustar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="phone-tabbar">
+            <div class="tab-item"><span class="tab-icon">📋</span>Hábitos</div>
+            <div class="tab-item active"><span class="tab-icon">💬</span>Pepito</div>
+            <div class="tab-item"><span class="tab-icon">👤</span>Perfil</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Return -->
+      <div class="mockup-card">
+        <h3>Vuelta tras ausencia</h3>
+        <p class="subtitle">Sin castigo, sin drama — bienvenida cálida</p>
+        <div class="phone theme-salvia" data-themed>
+          <div class="phone-header">
+            <span>Pepito Grillo</span>
+            <span class="privacy-badge">🔒 Solo tú</span>
+          </div>
+          <div class="phone-content">
+            <div class="chat-container">
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">¡Hola, Marta! Me alegra verte. Tu progreso anterior sigue aquí — 12 días de lectura que nadie te quita. ¿Cómo estás?</div>
+              </div>
+              <div class="chat-timestamp">Ahora</div>
+
+              <div class="section-title" style="margin-left: 0;">Tu progreso acumulado</div>
+              <div class="heatmap-grid" id="salvia-heatmap-2"></div>
+
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">Los espacios vacíos son pausas, no fracasos. ¿Quieres retomar donde lo dejaste o hablar de algo nuevo?</div>
+              </div>
+
+              <div class="agent-row" style="margin-top: 8px;">
+                <div class="agent-avatar" style="visibility: hidden;">🦗</div>
+                <div class="typing-indicator" style="background: var(--surface-chat-agent); border-radius: 16px; border-bottom-left-radius: 4px;">
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="phone-tabbar">
+            <div class="tab-item"><span class="tab-icon">📋</span>Hábitos</div>
+            <div class="tab-item active"><span class="tab-icon">💬</span>Pepito</div>
+            <div class="tab-item"><span class="tab-icon">👤</span>Perfil</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ATARDECER SERENO ==================== -->
+  <section class="direction" id="dir-atardecer">
+    <div class="direction-header">
+      <h2 style="color: #9488be;">Atardecer Sereno</h2>
+      <p>Reflexión, intimidad, modernidad. Como un momento de pausa al final del día.</p>
+      <div class="palette-strip">
+        <div class="color-chip" style="background: #f6f4fa;">#f6f4fa</div>
+        <div class="color-chip" style="background: #ece8f4;">#ece8f4</div>
+        <div class="color-chip" style="background: #d8d0e8;">#d8d0e8</div>
+        <div class="color-chip" style="background: #7b6fa6; color: rgba(255,255,255,0.7);">#7b6fa6</div>
+        <div class="color-chip" style="background: #6b5f96; color: rgba(255,255,255,0.7);">#6b5f96</div>
+        <div class="color-chip" style="background: #e8927c;">#e8927c</div>
+        <div class="color-chip" style="background: #7ea87e; color: rgba(255,255,255,0.7);">#7ea87e</div>
+        <div class="color-chip" style="background: #2e2842; color: rgba(255,255,255,0.7);">#2e2842</div>
+      </div>
+    </div>
+
+    <div class="mockups-grid">
+      <!-- Dashboard -->
+      <div class="mockup-card">
+        <h3>Dashboard — Registro Rápido</h3>
+        <p class="subtitle">Loop diario: un tap por hábito</p>
+        <div class="phone theme-atardecer" data-themed id="atardecer-dashboard">
+          <div class="phone-header">
+            <span>Primer</span>
+            <span class="sync-icon">☁️ ✓</span>
+          </div>
+          <div class="phone-content">
+            <div class="greeting">Buenos días, Marta</div>
+            <div class="greeting-sub">Tu progreso habla por ti</div>
+
+            <div class="section-title">Hoy</div>
+            <div class="habit-list">
+              <div class="habit-item">
+                <div class="habit-checkbox checked">✓</div>
+                <span class="habit-name">Meditar 5 minutos</span>
+                <span class="habit-streak">7 días</span>
+              </div>
+              <div class="habit-item">
+                <div class="habit-checkbox checked">✓</div>
+                <span class="habit-name">Leer 10 páginas</span>
+                <span class="habit-streak">12 días</span>
+              </div>
+              <div class="habit-item">
+                <div class="habit-checkbox"></div>
+                <span class="habit-name">Caminar 20 minutos</span>
+                <span class="habit-streak">3 días</span>
+              </div>
+            </div>
+
+            <div class="section-title">Tu progreso</div>
+            <div class="heatmap-grid" id="atardecer-heatmap-1"></div>
+
+            <div class="summit-badge">✨ Cumbre: 7 días — Meditar</div>
+          </div>
+          <div class="phone-tabbar">
+            <div class="tab-item active"><span class="tab-icon">📋</span>Hábitos</div>
+            <div class="tab-item"><span class="tab-icon">💬</span>Pepito</div>
+            <div class="tab-item"><span class="tab-icon">👤</span>Perfil</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat -->
+      <div class="mockup-card">
+        <h3>Chat — Primera Conversación</h3>
+        <p class="subtitle">La conversación que configura todo</p>
+        <div class="phone theme-atardecer" data-themed>
+          <div class="phone-header">
+            <span>Pepito Grillo</span>
+            <span class="privacy-badge">🔒 Solo tú</span>
+          </div>
+          <div class="phone-content">
+            <div class="chat-container">
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">Piensa en tu mejor versión. ¿Qué es lo que te imaginas?</div>
+              </div>
+              <div class="chat-timestamp">Hace 3 min</div>
+
+              <div class="chat-bubble user">Me gustaría ser alguien que lee todos los días. Siempre empiezo libros pero los dejo a la mitad.</div>
+
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">Eso dice mucho de ti — te interesa aprender, solo falta encontrar el momento adecuado. ¿Hay algún momento del día donde sueles tener un rato tranquilo?</div>
+              </div>
+
+              <div class="chat-bubble user">Sí, antes de dormir siempre estoy en la cama con el móvil</div>
+
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">Perfecto. Ese momento es ideal — ya tienes la señal natural. Te propongo algo:</div>
+              </div>
+
+              <div class="habit-card-inline">
+                <h4>📖 Tu primer hábito</h4>
+                <div class="field"><strong>Señal:</strong> Cuando te metas en la cama por la noche</div>
+                <div class="field"><strong>Rutina:</strong> Leer 10 páginas del libro que tengas</div>
+                <div class="field"><strong>Recompensa:</strong> Marcar tu progreso y ver crecer tu racha</div>
+                <div class="field"><strong>Frecuencia:</strong> Cada noche</div>
+                <div class="habit-card-actions">
+                  <button class="btn-confirm">✓ Crear hábito</button>
+                  <button class="btn-adjust">Ajustar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="phone-tabbar">
+            <div class="tab-item"><span class="tab-icon">📋</span>Hábitos</div>
+            <div class="tab-item active"><span class="tab-icon">💬</span>Pepito</div>
+            <div class="tab-item"><span class="tab-icon">👤</span>Perfil</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Return -->
+      <div class="mockup-card">
+        <h3>Vuelta tras ausencia</h3>
+        <p class="subtitle">Sin castigo, sin drama — bienvenida cálida</p>
+        <div class="phone theme-atardecer" data-themed>
+          <div class="phone-header">
+            <span>Pepito Grillo</span>
+            <span class="privacy-badge">🔒 Solo tú</span>
+          </div>
+          <div class="phone-content">
+            <div class="chat-container">
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">¡Hola, Marta! Me alegra verte. Tu progreso anterior sigue aquí — 12 días de lectura que nadie te quita. ¿Cómo estás?</div>
+              </div>
+              <div class="chat-timestamp">Ahora</div>
+
+              <div class="section-title" style="margin-left: 0;">Tu progreso acumulado</div>
+              <div class="heatmap-grid" id="atardecer-heatmap-2"></div>
+
+              <div class="agent-row">
+                <div class="agent-avatar">🦗</div>
+                <div class="chat-bubble agent">Los espacios vacíos son pausas, no fracasos. ¿Quieres retomar donde lo dejaste o hablar de algo nuevo?</div>
+              </div>
+
+              <div class="agent-row" style="margin-top: 8px;">
+                <div class="agent-avatar" style="visibility: hidden;">🦗</div>
+                <div class="typing-indicator" style="background: var(--surface-chat-agent); border-radius: 16px; border-bottom-left-radius: 4px;">
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="phone-tabbar">
+            <div class="tab-item"><span class="tab-icon">📋</span>Hábitos</div>
+            <div class="tab-item active"><span class="tab-icon">💬</span>Pepito</div>
+            <div class="tab-item"><span class="tab-icon">👤</span>Perfil</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== COMPARISON VIEW ==================== -->
+  <div class="comparison-view" id="comparison-view">
+    <div class="comparison-column">
+      <h3 style="color: #daa04d;">Tierra Cálida</h3>
+      <div class="phone theme-tierra" data-themed>
+        <div class="phone-header">
+          <span>Primer</span>
+          <span class="sync-icon">☁️ ✓</span>
+        </div>
+        <div class="phone-content">
+          <div class="greeting">Buenos días, Marta</div>
+          <div class="section-title">Hoy</div>
+          <div class="habit-list">
+            <div class="habit-item">
+              <div class="habit-checkbox checked">✓</div>
+              <span class="habit-name">Meditar 5 min</span>
+              <span class="habit-streak">7d</span>
+            </div>
+            <div class="habit-item">
+              <div class="habit-checkbox"></div>
+              <span class="habit-name">Leer 10 pág</span>
+              <span class="habit-streak">12d</span>
+            </div>
+          </div>
+          <div class="heatmap-grid" id="comp-heatmap-tierra"></div>
+        </div>
+        <div class="phone-tabbar">
+          <div class="tab-item active"><span class="tab-icon">📋</span></div>
+          <div class="tab-item"><span class="tab-icon">💬</span></div>
+          <div class="tab-item"><span class="tab-icon">👤</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="comparison-column">
+      <h3 style="color: #6a9e6e;">Salvia Viva</h3>
+      <div class="phone theme-salvia" data-themed>
+        <div class="phone-header">
+          <span>Primer</span>
+          <span class="sync-icon">☁️ ✓</span>
+        </div>
+        <div class="phone-content">
+          <div class="greeting">Buenos días, Marta</div>
+          <div class="section-title">Hoy</div>
+          <div class="habit-list">
+            <div class="habit-item">
+              <div class="habit-checkbox checked">✓</div>
+              <span class="habit-name">Meditar 5 min</span>
+              <span class="habit-streak">7d</span>
+            </div>
+            <div class="habit-item">
+              <div class="habit-checkbox"></div>
+              <span class="habit-name">Leer 10 pág</span>
+              <span class="habit-streak">12d</span>
+            </div>
+          </div>
+          <div class="heatmap-grid" id="comp-heatmap-salvia"></div>
+        </div>
+        <div class="phone-tabbar">
+          <div class="tab-item active"><span class="tab-icon">📋</span></div>
+          <div class="tab-item"><span class="tab-icon">💬</span></div>
+          <div class="tab-item"><span class="tab-icon">👤</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="comparison-column">
+      <h3 style="color: #9488be;">Atardecer Sereno</h3>
+      <div class="phone theme-atardecer" data-themed>
+        <div class="phone-header">
+          <span>Primer</span>
+          <span class="sync-icon">☁️ ✓</span>
+        </div>
+        <div class="phone-content">
+          <div class="greeting">Buenos días, Marta</div>
+          <div class="section-title">Hoy</div>
+          <div class="habit-list">
+            <div class="habit-item">
+              <div class="habit-checkbox checked">✓</div>
+              <span class="habit-name">Meditar 5 min</span>
+              <span class="habit-streak">7d</span>
+            </div>
+            <div class="habit-item">
+              <div class="habit-checkbox"></div>
+              <span class="habit-name">Leer 10 pág</span>
+              <span class="habit-streak">12d</span>
+            </div>
+          </div>
+          <div class="heatmap-grid" id="comp-heatmap-atardecer"></div>
+        </div>
+        <div class="phone-tabbar">
+          <div class="tab-item active"><span class="tab-icon">📋</span></div>
+          <div class="tab-item"><span class="tab-icon">💬</span></div>
+          <div class="tab-item"><span class="tab-icon">👤</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOKEN REFERENCE ==================== -->
+  <section class="token-section" id="token-section">
+    <h2>Mapeo de Tokens por Tema</h2>
+    <p style="text-align: center; margin-bottom: 24px; color: #999;">Mismos tokens semánticos, distintos valores. El tema es intercambiable.</p>
+
+    <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 24px;">
+      <button class="view-btn active" onclick="showTokenTheme('tierra', this)">Tierra</button>
+      <button class="view-btn" onclick="showTokenTheme('salvia', this)">Salvia</button>
+      <button class="view-btn" onclick="showTokenTheme('atardecer', this)">Atardecer</button>
+    </div>
+
+    <div class="token-grid" id="token-grid"></div>
+  </section>
+
+</main>
+
+<script>
+  // Heatmap generation
+  function generateHeatmap(containerId, pattern) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const cells = pattern || generatePattern();
+    container.innerHTML = '';
+    cells.forEach(level => {
+      const cell = document.createElement('div');
+      cell.className = 'heatmap-cell ' + level;
+      container.appendChild(cell);
+    });
+  }
+
+  function generatePattern() {
+    const levels = ['empty', 'low', 'mid', 'high'];
+    const pattern = [];
+    for (let i = 0; i < 75; i++) {
+      const rand = Math.random();
+      if (rand < 0.25) pattern.push('empty');
+      else if (rand < 0.50) pattern.push('low');
+      else if (rand < 0.78) pattern.push('mid');
+      else pattern.push('high');
+    }
+    return pattern;
+  }
+
+  // Pattern with gap (for return after absence)
+  function generatePatternWithGap() {
+    const pattern = [];
+    for (let i = 0; i < 75; i++) {
+      if (i >= 45 && i <= 60) {
+        pattern.push('empty');
+      } else {
+        const rand = Math.random();
+        if (rand < 0.2) pattern.push('empty');
+        else if (rand < 0.45) pattern.push('low');
+        else if (rand < 0.75) pattern.push('mid');
+        else pattern.push('high');
+      }
+    }
+    return pattern;
+  }
+
+  // Use consistent patterns across themes
+  const dashboardPattern = generatePattern();
+  const absencePattern = generatePatternWithGap();
+
+  // Generate all heatmaps
+  ['tierra', 'salvia', 'atardecer'].forEach(theme => {
+    generateHeatmap(theme + '-heatmap-1', dashboardPattern);
+    generateHeatmap(theme + '-heatmap-2', absencePattern);
+    generateHeatmap('comp-heatmap-' + theme, dashboardPattern);
+  });
+
+  // Navigation
+  let currentView = 'direction'; // 'direction', 'comparison', 'tokens'
+  let currentTheme = 'tierra';
+  let currentMode = 'light';
+
+  function showDirection(theme) {
+    currentView = 'direction';
+    currentTheme = theme;
+
+    document.querySelectorAll('.direction').forEach(d => d.classList.remove('active'));
+    document.getElementById('dir-' + theme).classList.add('active');
+    document.getElementById('comparison-view').classList.remove('active');
+    document.getElementById('token-section').classList.remove('active');
+
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector('.nav-tab[data-theme="' + theme + '"]').classList.add('active');
+  }
+
+  function showComparison() {
+    currentView = 'comparison';
+    document.querySelectorAll('.direction').forEach(d => d.classList.remove('active'));
+    document.getElementById('comparison-view').classList.add('active');
+    document.getElementById('token-section').classList.remove('active');
+
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-tab')[3].classList.add('active');
+  }
+
+  function showTokens() {
+    currentView = 'tokens';
+    document.querySelectorAll('.direction').forEach(d => d.classList.remove('active'));
+    document.getElementById('comparison-view').classList.remove('active');
+    document.getElementById('token-section').classList.add('active');
+
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-tab')[4].classList.add('active');
+
+    showTokenTheme('tierra', document.querySelector('#token-section .view-btn'));
+  }
+
+  // Dark/Light mode
+  function setMode(mode) {
+    currentMode = mode;
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    document.querySelectorAll('.phone[data-themed]').forEach(phone => {
+      const classes = phone.className.split(' ').filter(c => !c.startsWith('theme-'));
+      let baseTheme = '';
+      if (phone.closest('.theme-tierra, #dir-tierra, .comparison-column:nth-child(1)')) baseTheme = 'tierra';
+      // Detect theme from parent
+      const parent = phone.closest('[class*="theme-"]') || phone.closest('.comparison-column');
+      if (parent) {
+        if (parent.classList.contains('theme-tierra') || parent.querySelector('h3[style*="daa04d"]')) baseTheme = 'tierra';
+        else if (parent.classList.contains('theme-salvia') || parent.querySelector('h3[style*="6a9e6e"]')) baseTheme = 'salvia';
+        else if (parent.classList.contains('theme-atardecer') || parent.querySelector('h3[style*="9488be"]')) baseTheme = 'atardecer';
+      }
+      // Fallback: check own class
+      if (!baseTheme) {
+        if (phone.classList.contains('theme-tierra')) baseTheme = 'tierra';
+        else if (phone.classList.contains('theme-salvia')) baseTheme = 'salvia';
+        else if (phone.classList.contains('theme-atardecer')) baseTheme = 'atardecer';
+      }
+
+      // Remove all theme classes
+      phone.classList.remove('theme-tierra', 'theme-salvia', 'theme-atardecer',
+        'theme-tierra-dark', 'theme-salvia-dark', 'theme-atardecer-dark');
+
+      if (mode === 'dark') {
+        phone.classList.add('theme-' + baseTheme + '-dark');
+      } else {
+        phone.classList.add('theme-' + baseTheme);
+      }
+    });
+  }
+
+  // Store base theme on each phone for mode switching
+  document.querySelectorAll('.phone[data-themed]').forEach(phone => {
+    if (phone.classList.contains('theme-tierra')) phone.dataset.baseTheme = 'tierra';
+    else if (phone.classList.contains('theme-salvia')) phone.dataset.baseTheme = 'salvia';
+    else if (phone.classList.contains('theme-atardecer')) phone.dataset.baseTheme = 'atardecer';
+  });
+
+  // Improved setMode using data attribute
+  function setMode(mode) {
+    currentMode = mode;
+    document.querySelectorAll('.view-toggle .view-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    document.querySelectorAll('.phone[data-themed]').forEach(phone => {
+      const base = phone.dataset.baseTheme;
+      phone.classList.remove('theme-tierra', 'theme-salvia', 'theme-atardecer',
+        'theme-tierra-dark', 'theme-salvia-dark', 'theme-atardecer-dark');
+      phone.classList.add(mode === 'dark' ? 'theme-' + base + '-dark' : 'theme-' + base);
+    });
+  }
+
+  // Token display
+  const tokenData = {
+    tierra: {
+      '--color-surface-primary': '#faf6f0',
+      '--color-surface-secondary': '#f3ebe0',
+      '--color-surface-chat-user': '#e8d9c4',
+      '--color-surface-chat-agent': '#fff8ee',
+      '--color-text-primary': '#3d2e1f',
+      '--color-text-secondary': '#7a6652',
+      '--color-accent-primary': '#c8873e',
+      '--color-accent-celebration': '#daa04d',
+      '--color-accent-agent': '#a06b2f',
+      '--color-heatmap-empty': '#ede5da',
+      '--color-heatmap-low': '#e6cfa8',
+      '--color-heatmap-mid': '#d4a054',
+      '--color-heatmap-high': '#b8862d',
+      '--color-state-success': '#8baa6e',
+    },
+    salvia: {
+      '--color-surface-primary': '#f5f8f5',
+      '--color-surface-secondary': '#eaf0ea',
+      '--color-surface-chat-user': '#d4e2d4',
+      '--color-surface-chat-agent': '#f0f7f0',
+      '--color-text-primary': '#2a3a2a',
+      '--color-text-secondary': '#5a6e5a',
+      '--color-accent-primary': '#5d8a61',
+      '--color-accent-celebration': '#6a9e6e',
+      '--color-accent-agent': '#4a7a50',
+      '--color-heatmap-empty': '#e4ece4',
+      '--color-heatmap-low': '#bbd4bc',
+      '--color-heatmap-mid': '#7a9e7e',
+      '--color-heatmap-high': '#4a7a50',
+      '--color-state-success': '#6a9e6e',
+    },
+    atardecer: {
+      '--color-surface-primary': '#f6f4fa',
+      '--color-surface-secondary': '#ece8f4',
+      '--color-surface-chat-user': '#d8d0e8',
+      '--color-surface-chat-agent': '#f4f0fb',
+      '--color-text-primary': '#2e2842',
+      '--color-text-secondary': '#6b5f82',
+      '--color-accent-primary': '#7b6fa6',
+      '--color-accent-celebration': '#e8927c',
+      '--color-accent-agent': '#6b5f96',
+      '--color-heatmap-empty': '#e8e2f0',
+      '--color-heatmap-low': '#c8bede',
+      '--color-heatmap-mid': '#7b6fa6',
+      '--color-heatmap-high': '#e8927c',
+      '--color-state-success': '#7ea87e',
+    }
+  };
+
+  function showTokenTheme(theme, btn) {
+    document.querySelectorAll('#token-section .view-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    const grid = document.getElementById('token-grid');
+    const tokens = tokenData[theme];
+    grid.innerHTML = '';
+
+    Object.entries(tokens).forEach(([name, value]) => {
+      grid.innerHTML += `
+        <div class="token-item">
+          <div class="token-swatch" style="background: ${value};"></div>
+          <div class="token-info">
+            <div class="token-name">${name}</div>
+            <div class="token-value">${value}</div>
+          </div>
+        </div>
+      `;
+    });
+  }
+</script>
+
+</body>
+</html>
