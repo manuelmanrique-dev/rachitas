@@ -10,18 +10,20 @@ La idea es simple: registrar tus rachas sin culpa, celebrar el progreso sin toxi
 
 ## 🧭 Estado actual del proyecto
 
-**Fase: Planning** — Brainstorming completado. Próximo paso: Project Brief con BMad Method.
+**Fase: Pre-implementación** — Planificación completa, validando readiness para desarrollo.
 
 | Fase | Estado |
 |------|--------|
 | 🟩 Brainstorming | ✅ Completado |
-| ⬜ Project Brief (BMad) | 🔜 Próximo |
-| ⬜ PRD | — |
-| ⬜ Arquitectura | — |
-| ⬜ Desarrollo — Fase 0 (core) | — |
-| ⬜ Desarrollo — Fase 1 (agente IA) | — |
-| ⬜ Desarrollo — Fase 2 (profundidad) | — |
-| ⬜ Desarrollo — Fase 3 (social) | — |
+| 🟩 Investigación (mercado, dominio, técnica) | ✅ Completado |
+| 🟩 Product Brief | ✅ Completado |
+| 🟩 PRD + Validación | ✅ Completado |
+| 🟩 UX Design Spec | ✅ Completado |
+| 🟩 Arquitectura | ✅ Completado |
+| 🟩 Epics y Stories | ✅ Completado |
+| 🟨 Implementation Readiness Check | 🔄 En revisión |
+| ⬜ Sprint Planning | 🔜 Próximo |
+| ⬜ Desarrollo | — |
 
 ---
 
@@ -33,8 +35,9 @@ Lo que sí hace:
 - Muestra tu progreso en un heatmap visual y honesto
 - Te ayuda a **diseñar** hábitos reales (no solo a registrar checks)
 - Tiene un agente IA empático basado en el framework de Hábitos Atómicos
+- Modelo BYO-AI: trae tu propia API key, sin suscripciones ocultas
 - Crece y se adapta contigo — el día 1 no es igual que el año 3
-- Tiene un core 100% gratuito, siempre
+- Core 100% gratuito, siempre
 
 ---
 
@@ -42,10 +45,10 @@ Lo que sí hace:
 
 ```
 rachitas/
-├── docs/
-│   └── brainstorming-session-2026-02-28.md   ← 37 ideas, 8 temas, 4 anti-patrones
-├── _bmad-output/                              ← Documentación BMad (se irá llenando)
-│   └── planning-artifacts/
+├── _bmad/                                     ← Configuración BMad Method
+├── _bmad-output/
+│   ├── planning-artifacts/                    ← PRD, arquitectura, UX, epics, research
+│   └── implementation-artifacts/              ← Stories y código (próximamente)
 └── README.md
 ```
 
@@ -72,17 +75,26 @@ Nacidos de experiencias reales durante el brainstorming:
 
 ## 📍 Roadmap de alto nivel
 
-**Fase 0 — Core funcional**
-Clon funcional de lo esencial: registro de hábitos, heatmap, frecuencia configurable. Sin IA, sin complejidad. Solo lo que funciona.
+**Épica 1 — Fundación y PWA Instalable**
+Setup inicial, PWA funcional, design system base. La app se puede instalar y tiene estructura.
 
-**Fase 1 — El diferenciador**
-Agente conversacional con framework de Hábitos Atómicos. Diseñas tu hábito hablando, no rellenando formularios.
+**Épica 2 — Identidad de Usuario**
+Registro, login (email + social), perfil y eliminación de cuenta.
 
-**Fase 2 — Profundidad y retención**
-Progresión visual, revelación progresiva de datos, insights cualitativos, widget de registro simplificado.
+**Épica 3 — Gestión de Hábitos**
+CRUD de hábitos, frecuencia configurable, modos de dificultad (normal/difícil).
 
-**Fase 3 — Lo social**
-Hábitos colaborativos, dashboard compartido, modelo BYO-AI.
+**Épica 4 — Registro y Visualización**
+Check-in de hábitos, cálculo de rachas, heatmap estilo GitHub, estadísticas.
+
+**Épica 5 — Sincronización Offline y Multi-dispositivo**
+Offline-first con Dexie.js, sincronización con Supabase, resolución de conflictos.
+
+**Épica 6 — Agente IA Conversacional**
+Onboarding conversacional, framework Hábitos Atómicos, modelo BYO-AI.
+
+**Épica 7 — Administración y Monitoreo**
+Health checks, métricas de uso, panel de administración.
 
 ---
 
