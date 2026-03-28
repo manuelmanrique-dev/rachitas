@@ -1,0 +1,97 @@
+# generated: 2026-03-28
+# last_updated: 2026-03-28
+# project: primer-bmad
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: {project-root}/_bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-03-28
+last_updated: 2026-03-28  # updated by create-story
+project: primer-bmad
+project_key: NOKEY
+tracking_system: file-system
+story_location: "{project-root}/_bmad-output/implementation-artifacts"
+
+development_status:
+  # Epic 1: Fundacion del Proyecto y PWA Instalable
+  epic-1: in-progress
+  1-1-inicializar-proyecto-con-starter-template-y-tooling: ready-for-dev
+  1-2-design-tokens-tema-tierra-calida-y-tipografia: backlog
+  1-3-layout-responsive-con-navegacion-tab-bar: backlog
+  1-4-pwa-instalable-con-service-worker-y-offline-shell: backlog
+  epic-1-retrospective: optional
+
+  # Epic 2: Identidad de Usuario y Gestion de Cuenta
+  epic-2: backlog
+  2-1-registro-e-inicio-de-sesion-con-email: backlog
+  2-2-registro-e-inicio-de-sesion-con-google-oauth: backlog
+  2-3-perfil-de-usuario-y-cierre-de-sesion: backlog
+  2-4-eliminacion-de-cuenta-y-datos-gdpr: backlog
+  epic-2-retrospective: optional
+
+  # Epic 3: Gestion de Habitos
+  epic-3: backlog
+  3-1-crear-habito-manualmente-con-formulario-educativo: backlog
+  3-2-dashboard-con-resumen-de-habitos-activos: backlog
+  3-3-editar-habito-con-edicion-inline: backlog
+  3-4-eliminar-archivar-habito: backlog
+  epic-3-retrospective: optional
+
+  # Epic 4: Registro de Habitos y Visualizacion de Progreso
+  epic-4: backlog
+  4-1-registro-rapido-con-un-tap-y-micro-celebracion: backlog
+  4-2-calculo-de-rachas-por-modo-y-frecuencia: backlog
+  4-3-heatmap-de-progreso-emocional: backlog
+  4-4-feedback-de-estado-y-patrones-de-celebracion: backlog
+  epic-4-retrospective: optional
+
+  # Epic 5: Sincronizacion Offline y Multi-dispositivo
+  epic-5: backlog
+  5-1-registro-offline-con-cola-de-escritura-local: backlog
+  5-2-sincronizacion-automatica-con-servidor-como-fuente-de-verdad: backlog
+  5-3-indicador-de-sincronizacion-visible: backlog
+  epic-5-retrospective: optional
+
+  # Epic 6: Agente IA - Pepito Grillo
+  epic-6: backlog
+  6-1-interfaz-de-chat-con-pepito-grillo: backlog
+  6-2-llm-adapter-y-edge-function-proxy: backlog
+  6-3-tool-contracts-del-agente-con-validacion-zod: backlog
+  6-4-human-in-the-loop-confirmacion-de-acciones-del-agente: backlog
+  6-5-onboarding-conversacional-para-primer-habito: backlog
+  6-6-tono-empatico-bienvenida-tras-ausencia-y-agente-bajo-demanda: backlog
+  epic-6-retrospective: optional
+
+  # Epic 7: Administracion y Monitoreo
+  epic-7: backlog
+  7-1-administracion-via-supabase-dashboard: backlog
+  epic-7-retrospective: optional
