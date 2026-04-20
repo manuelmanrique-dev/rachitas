@@ -8,3 +8,77 @@ _bmad/
 .DS_Store
 *.log
 *:Zone.Identifier
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+.vite/
+.cache/
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+/playwright-report/
+/test-results/
+/playwright/.cache/
+
+# Environment
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor and IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# WSL
+*.orig
+
+# TypeScript
+*.tsbuildinfo
+
+# Package managers
+.pnpm-store/
+
+# Deployment
+.wrangler/
+.cloudflare/
+
+# BMad / AI agents
+.bmad-cache/
+.claude-cache/
+_bmad-output/**/*.tmp
+_bmad-output/**/cache/
+_bmad-output/**/.cache/
